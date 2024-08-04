@@ -1,0 +1,127 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title>VR Movie Theatre Experience</title>
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/app.scss" rel="stylesheet">
+  <meta content="" name="description">
+
+  <meta content="" property="og:title">
+  <meta content="" property="og:type">
+  <meta content="" property="og:url">
+  <meta content="" property="og:image">
+  <meta content="" property="og:image:alt">
+
+  <link href="/favicon.ico" rel="icon" sizes="any">
+  <link href="/icon.svg" rel="icon" type="image/svg+xml">
+  <link href="icon.png" rel="apple-touch-icon">
+
+  <link href="site.webmanifest" rel="manifest">
+  <meta content="#fafafa" name="theme-color">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"></script>
+
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script>
+    window.AFRAME.registerComponent('gaze-listener', {
+      schema: {
+        type: 'string',
+        default: 'clicked'
+      },
+
+      init: function () {
+        this.el.addEventListener('mouseenter', () => {
+          if (this.data === 'clicked') {
+            console.log('Gazed at:', this.el.getAttribute('id'));
+
+            this.el.setAttribute('color', '#0F0')
+
+            // // Trigger custom JS code
+            // if (this.data === 'trigger') {
+            //   this.el.setAttribute('color', '#F00')
+            // }
+          }
+        });
+
+        this.el.addEventListener('mouseleave', () => {
+          console.log('Gaze left:', this.el.getAttribute('id'));
+          this.el.setAttribute('color', '#BBB')
+        });
+      }
+    });
+  </script>
+
+  <script src="https://unpkg.com/aframe-environment-component@1.2.0/dist/aframe-environment-component.min.js"></script>
+</head>
+
+<body>
+<a-scene loading-screen="enabled: false">
+  <a-assets>
+    <video
+      crossorigin="anonymous"
+      id="theatre-screen"
+      src="https://storage.googleapis.com/media-session/caminandes/short.mp4"></video>
+
+    <a-asset-item id="movie-theatre-screen-model"
+                  src="http://localhost:5000/static/madame_walker_theatre.glb"></a-asset-item>
+  </a-assets>
+
+  <a-light castShadow="true" intensity="1" position="1 1 1" type="directional"></a-light>
+  <a-light color="#ffffff" type="ambient"></a-light>
+
+  <a-entity environment="preset: egypt"></a-entity>
+
+  <a-entity gltf-model="#movie-theatre-screen-model" id="movie-theatre-screen-model-elem" position="0 1.5 -3"
+            rotation="0 90 0" scale="1 1 1"></a-entity>
+
+
+  <a-entity id="screenEntity" position="0 5 -18" scale="0.9 0.9 0.9">
+    <a-video height="9" src="#theatre-screen" width="16"></a-video>
+  </a-entity>
+
+
+  <!-- 3D Button Pause entity -->
+  <a-box class="clickable" color="#BBB" data-raycastable="" depth="0.5w" gaze-listener="" geometry="" height="1"
+         id="gaze-pause-btn" material="" position="-7.8 8 -16" rotation="15 55 0" scale="0.6 0.6 0.6" width="5">
+    <a-text align="center" color="#000" position="0 -0.1 0.51" scale="2 2 1" text="" value="Pause Video"></a-text>
+  </a-box>
+
+  <!-- 3D Button Play entity -->
+  <a-box
+    class="clickable" color="#BBB" data-raycastable
+    depth="0.5w" gaze-listener
+    height="1" id="gaze-play-btn"
+    position="7.8 8 -16" rotation="15 -55 0" scale="0.6 0.6 0.6" width="5"
+  >
+    <a-text align="center" color="#000" position="0 -0.1 0.51" scale="2 2 1" value="Play Video"></a-text>
+  </a-box>
+
+  <!-- 3D Button Doraemon entity -->
+  <a-box
+    class="clickable" color="#BBB"
+    data-raycastable depth="0.5w" gaze-listener
+    height="1" id="gaze-voice-search-btn" position="7.9 2.4 -16"
+    rotation="0 -60 0" scale="0.6 0.6 0.6" width="5"
+  >
+    <a-text align="center" color="#000" position="0 -0.1 0.51" scale="2 2 1" value="Voice Search"></a-text>
+  </a-box>
+
+  <a-text align="center" color="#FFF" position="0 13 -12" value="Experience Prime Max" width="16"></a-text>
+
+  <a-entity camera look-controls position="0 1.2 -7" wasd-controls>
+    <a-cursor color="#FF0000" fuse="true" fuse-timeout="500" raycaster="objects: [data-raycastable]"></a-cursor>
+  </a-entity>
+</a-scene>
+
+<script defer src="js/app.ts" type="module"></script>
+</body>
+</html>
+

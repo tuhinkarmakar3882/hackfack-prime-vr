@@ -1,0 +1,56 @@
+.vr-movie-theatre-experience-container {
+  padding: 0 4px;
+  font-family: 'Raleway', sans-serif;
+  position: relative;
+
+  * {
+    transition: all 250ms ease-in-out;
+  }
+
+  nav.navigation-controls {
+    background: hsla(0, 0%, 0%, 0.5);
+    backdrop-filter: blur(4px);
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: clamp(250px, 30vw, 400px);
+    z-index: 1;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
+    padding: 4px 8px;
+
+    p.title {
+      margin-block: 0;
+      margin-bottom: 8px;
+    }
+
+    button {
+      outline: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      background-color: #EEE;
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled) {
+        cursor: pointer;
+
+        &:hover, &:focus {
+          background-color: #FFF;
+          transform: scale(1.01);
+        }
+
+        &:active {
+          background-color: #EAEAEA;
+          transform: scale(0.95);
+        }
+      }
+
+
+    }
+  }
+}
