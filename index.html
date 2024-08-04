@@ -66,12 +66,12 @@
 <a-scene loading-screen="enabled: false">
   <a-assets>
     <video
-      crossorigin="anonymous"
-      id="theatre-screen"
-      src="https://storage.googleapis.com/media-session/caminandes/short.mp4"></video>
+        crossorigin="anonymous"
+        id="theatre-screen"
+        src="https://storage.googleapis.com/media-session/caminandes/short.mp4"></video>
 
     <a-asset-item id="movie-theatre-screen-model"
-                  src="http://localhost:5000/static/madame_walker_theatre.glb"></a-asset-item>
+                  src="http://localhost:8080/static/madame_walker_theatre.glb"></a-asset-item>
   </a-assets>
 
   <a-light castShadow="true" intensity="1" position="1 1 1" type="directional"></a-light>
@@ -96,32 +96,33 @@
 
   <!-- 3D Button Play entity -->
   <a-box
-    class="clickable" color="#BBB" data-raycastable
-    depth="0.5w" gaze-listener
-    height="1" id="gaze-play-btn"
-    position="7.8 8 -16" rotation="15 -55 0" scale="0.6 0.6 0.6" width="5"
+      class="clickable" color="#BBB" data-raycastable
+      depth="0.5w" gaze-listener
+      height="1" id="gaze-play-btn"
+      position="7.8 8 -16" rotation="15 -55 0" scale="0.6 0.6 0.6" width="5"
   >
     <a-text align="center" color="#000" position="0 -0.1 0.51" scale="2 2 1" value="Play Video"></a-text>
   </a-box>
 
   <!-- 3D Button Doraemon entity -->
   <a-box
-    class="clickable" color="#BBB"
-    data-raycastable depth="0.5w" gaze-listener
-    height="1" id="gaze-voice-search-btn" position="7.9 2.4 -16"
-    rotation="0 -60 0" scale="0.6 0.6 0.6" width="5"
+      class="clickable" color="#BBB"
+      data-raycastable depth="0.5w" gaze-listener
+      height="1" id="gaze-voice-search-btn" position="7.9 2.4 -16"
+      rotation="0 -60 0" scale="0.6 0.6 0.6" width="5"
   >
     <a-text align="center" color="#000" position="0 -0.1 0.51" scale="2 2 1" value="Voice Search"></a-text>
   </a-box>
 
   <a-text align="center" color="#FFF" position="0 13 -12" value="Experience Prime Max" width="16"></a-text>
 
-  <a-entity camera look-controls position="0 1.2 -7" wasd-controls>
-    <a-cursor color="#FF0000" fuse="true" fuse-timeout="500" raycaster="objects: [data-raycastable]"></a-cursor>
+  <a-entity id="cameraRig" position="0 1.2 -7">
+    <a-entity camera look-controls wasd-controls>
+      <a-cursor color="#FF0000" fuse="true" fuse-timeout="500" raycaster="objects: [data-raycastable]"></a-cursor>
+    </a-entity>
   </a-entity>
 </a-scene>
 
 <script defer src="js/app.ts" type="module"></script>
 </body>
 </html>
-
