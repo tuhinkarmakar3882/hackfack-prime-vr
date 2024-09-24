@@ -1,22 +1,21 @@
-from flask import Flask, jsonify, request, render_template
-import time
-import os
-from youtubesearchpython import VideosSearch
 import os
 import time
 from urllib.error import HTTPError
-import yt_dlp
-from flask_cors import CORS
 
+import yt_dlp
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from youtubesearchpython import VideosSearch
 
 app = Flask(__name__)
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-OUTPUT_PATH = 'static' 
-RETRY_LIMIT = 5 
-RETRY_DELAY = 10 
-NUMBER_FILE = 'counter.txt' 
+OUTPUT_PATH = 'static'
+RETRY_LIMIT = 5
+RETRY_DELAY = 10
+NUMBER_FILE = 'counter.txt'
+
 
 def get_next_number():
     if os.path.exists(NUMBER_FILE):
@@ -28,6 +27,7 @@ def get_next_number():
     with open(NUMBER_FILE, 'w') as file:
         file.write(str(next_number))
     return number
+
 
 def search_youtube(query, retries=RETRY_LIMIT):
     attempt = 0
@@ -43,6 +43,7 @@ def search_youtube(query, retries=RETRY_LIMIT):
             time.sleep(RETRY_DELAY)
             attempt += 1
     raise Exception("Failed to search YouTube after several retries.")
+
 
 def download_video(video_url, output_path=OUTPUT_PATH):
     if not os.path.exists(output_path):
@@ -65,6 +66,7 @@ def download_video(video_url, output_path=OUTPUT_PATH):
         except Exception as e:
             print(f"An error occurred during download: {e}")
 
+
 def download_youtube_video(searchQuery):
     try:
         video_url = search_youtube(searchQuery)
@@ -73,14 +75,17 @@ def download_youtube_video(searchQuery):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+
 latest_text = ""
 listening = False
 last_sound_time = time.time()
-timeout_duration = 5 
+timeout_duration = 5
+
 
 @app.route('/speech', methods=['GET'])
 def get_speech():
     return jsonify({"text": latest_text})
+
 
 @app.route('/stop', methods=['POST'])
 def stop_listening():
@@ -88,15 +93,18 @@ def stop_listening():
     listening = False
     return jsonify({"status": "Listening stopped"})
 
-@app.route('/ui', methods=['GET'])
+
+@app.route('/health_check', methods=['GET'])
 def web_ui():
-    return render_template('web-speech-ui.html')
+    return jsonify({"status": "Ready!"})
+
 
 @app.route('/yt/', methods=['POST'])
-def downloadYTVideoAndReturnURL():
+def download_yt_video_and_return_url():
     data = request.get_json()
     print("downloadYTVideoAndReturnURL", data.get('searchString'))
-    return download_youtube_video(data.get('searchString'))      
-        
+    return download_youtube_video(data.get('searchString'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
