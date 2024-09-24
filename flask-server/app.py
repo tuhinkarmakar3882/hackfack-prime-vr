@@ -53,9 +53,13 @@ def download_video(video_url, output_path=OUTPUT_PATH):
     full_path = os.path.join(output_path, filename)
     ydl_opts = {
         'outtmpl': full_path,
-        'format': 'mp4',  # Ensure MP4 format
+        'format': 'bestvideo+bestaudio/best',  # Download best video and audio separately and merge
         'merge_output_format': 'mp4',  # Merge formats into MP4
-        'keepvideo': True,  # Avoid deleting the original files after merging
+        'postprocessors': [{  # Ensure we have the right post-processing
+            'key': 'FFmpegVideoConvertor',
+            'preferedformat': 'mp4',
+        }],
+        'keepvideo': True,  # Avoid deleting original files
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         print(f"Downloading from {video_url} as {filename}...")
